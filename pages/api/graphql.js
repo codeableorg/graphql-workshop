@@ -111,7 +111,6 @@ const resolvers = {
   },
   Query: {
     movie: (_, args) => {
-      console.log(args);
       return movies.find((movie) => movie.id === parseInt(args.id));
     },
     movies: () => {
