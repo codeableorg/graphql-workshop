@@ -1,17 +1,6 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import Cors from "micro-cors";
 import axios from "axios";
-import admin from "firebase-admin";
-import serviceAccount from "./credentials/codeable.json";
-
-//Initialize firebase
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-}
-
-const db = admin.firestore();
 
 // This data will be returned by our test endpoint
 let movies = [
@@ -123,16 +112,6 @@ const resolvers = {
       const person = response.data;
       return person;
     },
-    favorites: async () => {
-      const favorites = [];
-      const snapshot = await db.collection("favorites").get();
-      snapshot.forEach((favorite) =>
-        favorites.push(
-          movies.find((movie) => movie.id === parseInt(favorite.data().movieId))
-        )
-      );
-      return favorites;
-    },
   },
   Mutation: {
     addMovie: (_, args) => {
@@ -140,12 +119,6 @@ const resolvers = {
       const movie = { ...args.movie, id };
       movies = [...movies, movie];
       return movie;
-    },
-    addFavorite: async (_, args) => {
-      const res = await db.collection("favorites").doc().set({
-        movieId: args.movieId,
-      });
-      return !!res;
     },
   },
 };
