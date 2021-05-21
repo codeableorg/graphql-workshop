@@ -2,7 +2,7 @@ import { ApolloServer, gql } from "apollo-server-micro";
 import Cors from "micro-cors";
 import axios from "axios";
 import admin from "firebase-admin";
-import serviceAccount from "./credentials/codeable-300820-819387dfe679.json";
+import serviceAccount from "./credentials/codeable.json";
 
 //Initialize firebase
 if (!admin.apps.length) {
